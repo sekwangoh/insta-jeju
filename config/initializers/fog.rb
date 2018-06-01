@@ -5,5 +5,5 @@ CarrierWave.configure do |config|
     aws_secret_access_key: Rails.application.credentials.dig(:aws, :secret_access_key),
     region:                'ap-northeast-2'
   }
-  config.fog_directory  = 'insta-jeju-junwoo'
+  config.fog_directory  = 'jeju-likeopen'
 end

@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :check_user, only:[:edit, :update, :destroy]
 
   # GET /posts
   # GET /posts.json
@@ -20,6 +21,8 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+    redirect_to root_path, notice: '권한이 없습니다' and return unless @post.user == current_user
+
   end
 
   # POST /posts
@@ -61,6 +64,9 @@ class PostsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  def mypage
+    @posts = current_user.posts
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -71,5 +77,8 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:image, :content)
+    end
+    def check_user
+      redirect_to root_path and return unless @post.user == current_user
     end
 end
